@@ -1,15 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { analyzeMealSchema } from '@/lib/validations';
 
-let _openai: any = null;
-async function getOpenAI() {
-  if (!_openai) {
-    const { default: OpenAI } = await import('openai');
-    _openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY!,
-    });
+const AI_PROVIDER = process.env.AI_PROVIDER || 'deepseek';
+const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || process.env.OPENAI_API_KEY;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+
+let _ai: any = null;
+async function getAIClient() {
+  if (!_ai) {
+    if (AI_PROVIDER === 'openai' && OPENAI_API_KEY) {
+      const { default: OpenAI } = await import('openai');
+      _ai = new OpenAI({ apiKey: OPENAI_API_KEY });
+    } else {
+      const { default: OpenAI } = await import('openai');
+      _ai = new OpenAI({
+        apiKey: DEEPSEEK_API_KEY || '',
+        baseURL: 'https://api.deepseek.com',
+      });
+    }
   }
-  return _openai;
+  return _ai;
+}
+
+function getModel(): string {
+  if (AI_PROVIDER === 'openai' && OPENAI_API_KEY) return 'gpt-4o-mini';
+  return 'deepseek-chat';
 }
 
 export async function POST(request: NextRequest) {
@@ -25,7 +40,8 @@ export async function POST(request: NextRequest) {
     }
 
     const { description, totalWeightGrams, weightContext } = parsed.data;
-    const openai = await getOpenAI();
+    const ai = await getAIClient();
+    const isDeepSeek = AI_PROVIDER !== 'openai' || !OPENAI_API_KEY;
 
     const systemPrompt = `You are a cautious and helpful food analysis assistant.
 
@@ -67,52 +83,33 @@ Return ONLY valid JSON in this exact format:
 Total weight: ${totalWeightGrams}g
 Weight context: ${weightContext.replace('_', ' ')}`;
 
-    let imageContent: any = undefined;
-    if (body.imageBase64) {
-      imageContent = {
-        type: 'image_url',
-        image_url: {
-          url: `data:image/jpeg;base64,${body.imageBase64}`,
-        },
-      };
-    } else if (body.imageUrl) {
-      imageContent = {
-        type: 'image_url',
-        image_url: {
-          url: body.imageUrl,
-        },
-      };
-    }
-
     const messages: any[] = [
       { role: 'system', content: systemPrompt },
+      { role: 'user', content: userMessage },
     ];
 
-    if (imageContent) {
-      messages.push({
-        role: 'user',
-        content: [
-          { type: 'text', text: userMessage },
-          imageContent,
-        ],
-      });
-    } else {
-      messages.push({ role: 'user', content: userMessage });
-    }
+    const model = getModel();
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+    const completion = await ai.chat.completions.create({
+      model,
       messages,
       temperature: 0.3,
-      response_format: { type: 'json_object' },
+      ...(model === 'gpt-4o-mini' ? { response_format: { type: 'json_object' } } : {}),
     });
 
-    const text = completion.choices[0]?.message?.content;
+    let text = completion.choices[0]?.message?.content;
     if (!text) {
       return NextResponse.json(
         { error: 'AI returned empty response' },
         { status: 500 }
       );
+    }
+
+    if (model !== 'gpt-4o-mini') {
+      const jsonMatch = text.match(/```json\n([\s\S]*?)```/) || text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        text = jsonMatch[1] || jsonMatch[0];
+      }
     }
 
     const result = JSON.parse(text);
@@ -121,8 +118,9 @@ Weight context: ${weightContext.replace('_', ' ')}`;
       ...result,
       warnings: [
         ...(result.warnings || []),
+        isDeepSeek ? 'Analysis is text-only (photo not analyzed). Please review carefully.' : '',
         'This is an estimate. Please review the grams before saving.',
-      ],
+      ].filter(Boolean),
     });
   } catch (error) {
     console.error('Analyze meal error:', error);
