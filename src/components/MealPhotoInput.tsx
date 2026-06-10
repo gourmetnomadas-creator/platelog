@@ -38,7 +38,6 @@ export default function MealPhotoInput({
         ref={fileInputRef}
         type="file"
         accept="image/*"
-        capture="environment"
         onChange={handleFileChange}
         className="hidden"
       />
@@ -64,7 +63,7 @@ export default function MealPhotoInput({
           className="flex h-48 w-full flex-col items-center justify-center rounded-xl border-2 border-dashed border-stone-300 bg-stone-50 transition hover:bg-stone-100"
         >
           <span className="text-3xl">📷</span>
-          <span className="mt-2 text-sm text-stone-500">Take or upload a photo</span>
+          <span className="mt-2 text-sm text-stone-500">Take photo or choose from gallery</span>
         </button>
       )}
     </div>
