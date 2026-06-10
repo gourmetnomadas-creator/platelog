@@ -1,0 +1,179 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
+import AppShell from '@/components/AppShell';
+import MealForm from '@/components/MealForm';
+import MealReviewTable from '@/components/MealReviewTable';
+import { AIAnalysisResult, AIAnalysisItem, MealType, WeightContext } from '@/types';
+
+export default function AddMealPage() {
+  const router = useRouter();
+  const [session, setSession] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [analysis, setAnalysis] = useState<AIAnalysisResult | null>(null);
+  const [editableItems, setEditableItems] = useState<AIAnalysisItem[]>([]);
+  const [formData, setFormData] = useState<{
+    description: string;
+    mealType: MealType;
+    totalWeightGrams: number;
+    weightContext: WeightContext;
+    imageBase64: string | null;
+  } | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data: { session: s } }) => {
+      if (!s) {
+        router.push('/auth');
+        return;
+      }
+      setSession(s);
+    });
+  }, []);
+
+  const handleAnalyze = async (data: {
+    description: string;
+    mealType: MealType;
+    totalWeightGrams: number;
+    weightContext: WeightContext;
+    imageBase64: string | null;
+  }) => {
+    setLoading(true);
+    setFormData(data);
+
+    try {
+      const res = await fetch('/api/analyze-meal', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Analysis failed');
+      }
+
+      const result: AIAnalysisResult = await res.json();
+      setAnalysis(result);
+      setEditableItems(result.items);
+    } catch (err: any) {
+      alert(err.message || 'Could not analyze meal. Please try again or add ingredients manually.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    if (!formData || !session) return;
+    setSaving(true);
+
+    const supabase = createClient();
+    const today = new Date().toISOString().split('T')[0];
+
+    const totals = editableItems.reduce(
+      (acc, item) => ({
+        totalKcal: acc.totalKcal + (item.grams * item.kcalPer100g) / 100,
+        totalProtein: acc.totalProtein + (item.grams * item.proteinPer100g) / 100,
+        totalCarbs: acc.totalCarbs + (item.grams * item.carbsPer100g) / 100,
+        totalFat: acc.totalFat + (item.grams * item.fatPer100g) / 100,
+      }),
+      { totalKcal: 0, totalProtein: 0, totalCarbs: 0, totalFat: 0 }
+    );
+
+    const { data: meal, error: mealError } = await supabase
+      .from('meals')
+      .insert({
+        user_id: session.user.id,
+        date: today,
+        meal_type: formData.mealType,
+        description: formData.description,
+        total_weight_g: formData.totalWeightGrams,
+        weight_context: formData.weightContext,
+        total_kcal: totals.totalKcal,
+        total_protein_g: totals.totalProtein,
+        total_carbs_g: totals.totalCarbs,
+        total_fat_g: totals.totalFat,
+        ai_confidence: analysis?.confidence ?? null,
+        status: 'saved',
+      })
+      .select()
+      .single();
+
+    if (mealError) {
+      alert('Could not save meal. Please try again.');
+      setSaving(false);
+      return;
+    }
+
+    const mealItems = editableItems.map((item) => ({
+      meal_id: meal.id,
+      food_name: item.foodName,
+      grams: item.grams,
+      kcal_per_100g: item.kcalPer100g,
+      protein_per_100g: item.proteinPer100g,
+      carbs_per_100g: item.carbsPer100g,
+      fat_per_100g: item.fatPer100g,
+      kcal: (item.grams * item.kcalPer100g) / 100,
+      protein_g: (item.grams * item.proteinPer100g) / 100,
+      carbs_g: (item.grams * item.carbsPer100g) / 100,
+      fat_g: (item.grams * item.fatPer100g) / 100,
+      source: item.source,
+      confidence: item.confidence,
+    }));
+
+    const { error: itemsError } = await supabase
+      .from('meal_items')
+      .insert(mealItems);
+
+    if (itemsError) {
+      console.error('Error saving items:', itemsError);
+    }
+
+    setSaving(false);
+    router.push('/');
+  };
+
+  if (!session) return null;
+
+  return (
+    <AppShell>
+      <h2 className="mb-4 text-lg font-semibold text-stone-800">
+        {analysis ? 'Review meal' : 'Add meal'}
+      </h2>
+
+      {!analysis ? (
+        <MealForm onSubmit={handleAnalyze} loading={loading} />
+      ) : (
+        <div className="space-y-5">
+          <MealReviewTable
+            items={editableItems}
+            warnings={analysis.warnings}
+            confidence={analysis.confidence}
+            onItemsChange={setEditableItems}
+          />
+          <div className="flex gap-3">
+            <button
+              onClick={() => {
+                setAnalysis(null);
+                setEditableItems([]);
+              }}
+              className="flex-1 rounded-xl border border-stone-300 py-3 text-sm font-medium text-stone-600 transition hover:bg-stone-50"
+            >
+              Back
+            </button>
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className="flex-1 rounded-xl bg-amber-500 py-3 text-sm font-semibold text-white transition hover:bg-amber-600 disabled:opacity-50"
+            >
+              {saving ? 'Saving...' : 'Save meal'}
+            </button>
+          </div>
+        </div>
+      )}
+    </AppShell>
+  );
+}

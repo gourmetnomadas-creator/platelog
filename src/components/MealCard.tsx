@@ -1,0 +1,66 @@
+'use client';
+
+import { Meal } from '@/types';
+import { getMealTypeLabel, formatTime } from '@/lib/utils';
+
+interface MealCardProps {
+  meal: Meal;
+  onEdit: (meal: Meal) => void;
+  onDelete: (meal: Meal) => void;
+}
+
+export default function MealCard({ meal, onEdit, onDelete }: MealCardProps) {
+  return (
+    <div className="rounded-xl border border-stone-200 bg-white p-3 transition hover:border-stone-300">
+      <div className="flex gap-3">
+        {meal.photo_url ? (
+          <img
+            src={meal.photo_url}
+            alt={meal.description || 'Meal'}
+            className="h-16 w-16 flex-shrink-0 rounded-lg object-cover"
+          />
+        ) : (
+          <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-lg bg-stone-100 text-2xl">
+            🍽️
+          </div>
+        )}
+        <div className="min-w-0 flex-1">
+          <div className="flex items-start justify-between">
+            <div>
+              <span className="inline-block rounded bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700">
+                {getMealTypeLabel(meal.meal_type)}
+              </span>
+              <span className="ml-2 text-[10px] text-stone-400">{formatTime(meal.meal_time)}</span>
+            </div>
+            <div className="flex gap-1">
+              <button
+                onClick={() => onEdit(meal)}
+                className="rounded px-1.5 py-0.5 text-xs text-stone-400 hover:text-stone-600"
+              >
+                ✎
+              </button>
+              <button
+                onClick={() => onDelete(meal)}
+                className="rounded px-1.5 py-0.5 text-xs text-red-300 hover:text-red-500"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+          {meal.description && (
+            <p className="mt-1 truncate text-sm text-stone-700">{meal.description}</p>
+          )}
+          {meal.total_weight_g && (
+            <p className="text-xs text-stone-400">{Math.round(meal.total_weight_g)} g</p>
+          )}
+          <div className="mt-1 flex gap-3 text-xs font-medium text-stone-600">
+            <span>{Math.round(meal.total_kcal)} kcal</span>
+            <span className="text-stone-400">P {Math.round(meal.total_protein_g)}g</span>
+            <span className="text-stone-400">C {Math.round(meal.total_carbs_g)}g</span>
+            <span className="text-stone-400">F {Math.round(meal.total_fat_g)}g</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
