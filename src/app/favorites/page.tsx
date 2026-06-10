@@ -3,12 +3,15 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { getUserSession } from '@/lib/session';
 import { FavoriteMeal } from '@/types';
 import AppShell from '@/components/AppShell';
 import FavoriteMealCard from '@/components/FavoriteMealCard';
 import EmptyState from '@/components/EmptyState';
 import LoadingState from '@/components/LoadingState';
 import ConfirmDeleteDialog from '@/components/ConfirmDeleteDialog';
+
+const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
 
 export default function FavoritesPage() {
   const router = useRouter();
@@ -22,13 +25,14 @@ export default function FavoritesPage() {
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
-      if (!s) {
+    getUserSession().then((s) => {
+      if (!s && !DEV_MODE) {
         router.push('/auth');
         return;
       }
       setSession(s);
-      loadFavorites(supabase, s.user.id);
+      if (s) loadFavorites(supabase, s.user.id);
+      else setLoading(false);
     });
   }, []);
 

@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 import { Meal, Profile } from '@/types';
 import { getMealTypeLabel, formatDate } from '@/lib/utils';
 import { calculateDailyCalorieTarget } from '@/lib/calculations';
+import { getUserSession } from '@/lib/session';
 import AppShell from '@/components/AppShell';
 import DailySummaryCard from '@/components/DailySummaryCard';
 import MealCard from '@/components/MealCard';
@@ -13,6 +14,7 @@ import LoadingState from '@/components/LoadingState';
 import ConfirmDeleteDialog from '@/components/ConfirmDeleteDialog';
 import { useRouter } from 'next/navigation';
 
+const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
 const mealOrder = ['breakfast', 'lunch', 'dinner', 'snack'] as const;
 
 export default function TodayDashboard() {
@@ -24,14 +26,18 @@ export default function TodayDashboard() {
   const [session, setSession] = useState<any>(null);
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
-      setSession(s);
-      if (!s) {
+    getUserSession().then((session) => {
+      setSession(session);
+      if (!session && !DEV_MODE) {
         router.push('/auth');
         return;
       }
-      loadData(supabase, s.user.id);
+      if (session) {
+        const supabase = createClient();
+        loadData(supabase, session.user.id);
+      } else {
+        setLoading(false);
+      }
     });
   }, []);
 

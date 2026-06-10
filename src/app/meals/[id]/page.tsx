@@ -3,10 +3,13 @@
 import { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { getUserSession } from '@/lib/session';
 import AppShell from '@/components/AppShell';
 import MealReviewTable from '@/components/MealReviewTable';
 import LoadingState from '@/components/LoadingState';
 import { Meal, AIAnalysisItem } from '@/types';
+
+const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
 
 export default function EditMealPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -19,13 +22,14 @@ export default function EditMealPage({ params }: { params: Promise<{ id: string 
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
-      if (!s) {
+    getUserSession().then((s) => {
+      if (!s && !DEV_MODE) {
         router.push('/auth');
         return;
       }
       setSession(s);
-      loadMeal(supabase, s.user.id);
+      if (s) loadMeal(supabase, s.user.id);
+      else setLoading(false);
     });
   }, [id]);
 

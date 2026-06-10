@@ -3,10 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { getUserSession } from '@/lib/session';
 import { Profile } from '@/types';
 import AppShell from '@/components/AppShell';
 import ProfileForm from '@/components/ProfileForm';
 import LoadingState from '@/components/LoadingState';
+
+const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -16,27 +19,31 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
-      if (!s) {
+    getUserSession().then((s) => {
+      if (!s && !DEV_MODE) {
         router.push('/auth');
         return;
       }
-      supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', s.user.id)
-        .single()
-        .then(({ data }) => {
-          if (data) setProfile(data);
-          setLoading(false);
-        });
+      if (s) {
+        supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', s.user.id)
+          .single()
+          .then(({ data }) => {
+            if (data) setProfile(data);
+            setLoading(false);
+          });
+      } else {
+        setLoading(false);
+      }
     });
   }, []);
 
   const handleSave = async (data: Partial<Profile>) => {
     setSaving(true);
     const supabase = createClient();
-    const { data: { session: s } } = await supabase.auth.getSession();
+    const s = await getUserSession();
     if (!s) return;
 
     const { error } = await supabase.from('profiles').upsert({
@@ -65,18 +72,25 @@ export default function ProfilePage() {
           Log body weight
         </button>
       </div>
-      <div className="mt-4">
-        <button
-          onClick={async () => {
-            const supabase = createClient();
-            await supabase.auth.signOut();
-            router.push('/auth');
-          }}
-          className="w-full rounded-xl border border-red-200 py-3 text-sm font-medium text-red-500 transition hover:bg-red-50"
-        >
-          Sign out
-        </button>
-      </div>
+      {!DEV_MODE && (
+        <div className="mt-4">
+          <button
+            onClick={async () => {
+              const supabase = createClient();
+              await supabase.auth.signOut();
+              router.push('/auth');
+            }}
+            className="w-full rounded-xl border border-red-200 py-3 text-sm font-medium text-red-500 transition hover:bg-red-50"
+          >
+            Sign out
+          </button>
+        </div>
+      )}
+      {DEV_MODE && (
+        <div className="mt-4 rounded-xl bg-amber-50 p-3 text-center text-xs text-amber-600">
+          Dev mode — auth bypassed
+        </div>
+      )}
     </AppShell>
   );
 }

@@ -3,10 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { getUserSession } from '@/lib/session';
 import { BodyWeightLog } from '@/types';
 import AppShell from '@/components/AppShell';
 import WeightLogForm from '@/components/WeightLogForm';
 import LoadingState from '@/components/LoadingState';
+
+const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
 
 export default function WeightPage() {
   const router = useRouter();
@@ -16,12 +19,13 @@ export default function WeightPage() {
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
-      if (!s) {
+    getUserSession().then((s) => {
+      if (!s && !DEV_MODE) {
         router.push('/auth');
         return;
       }
-      loadLogs(supabase, s.user.id);
+      if (s) loadLogs(supabase, s.user.id);
+      else setLoading(false);
     });
   }, []);
 
@@ -39,7 +43,7 @@ export default function WeightPage() {
   const handleSave = async (data: { date: string; weight_kg: number; notes: string }) => {
     setSaving(true);
     const supabase = createClient();
-    const { data: { session: s } } = await supabase.auth.getSession();
+    const s = await getUserSession();
     if (!s) return;
 
     const { error } = await supabase.from('body_weight_logs').insert({

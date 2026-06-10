@@ -3,10 +3,13 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { getUserSession } from '@/lib/session';
 import AppShell from '@/components/AppShell';
 import MealForm from '@/components/MealForm';
 import MealReviewTable from '@/components/MealReviewTable';
 import { AIAnalysisResult, AIAnalysisItem, MealType, WeightContext } from '@/types';
+
+const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
 
 export default function AddMealPage() {
   const router = useRouter();
@@ -24,9 +27,8 @@ export default function AddMealPage() {
   } | null>(null);
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
-      if (!s) {
+    getUserSession().then((s) => {
+      if (!s && !DEV_MODE) {
         router.push('/auth');
         return;
       }

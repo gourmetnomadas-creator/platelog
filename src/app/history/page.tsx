@@ -3,12 +3,15 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { getUserSession } from '@/lib/session';
 import { Meal } from '@/types';
 import { formatShortDate, formatTime, getMealTypeLabel } from '@/lib/utils';
 import AppShell from '@/components/AppShell';
 import EmptyState from '@/components/EmptyState';
 import LoadingState from '@/components/LoadingState';
 import ConfirmDeleteDialog from '@/components/ConfirmDeleteDialog';
+
+const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
 
 export default function HistoryPage() {
   const router = useRouter();
@@ -22,13 +25,14 @@ export default function HistoryPage() {
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
-      if (!s) {
+    getUserSession().then((s) => {
+      if (!s && !DEV_MODE) {
         router.push('/auth');
         return;
       }
       setSession(s);
-      loadMeals(supabase, s.user.id);
+      if (s) loadMeals(supabase, s.user.id);
+      else setLoading(false);
     });
   }, []);
 
