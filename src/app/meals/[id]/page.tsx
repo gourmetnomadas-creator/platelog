@@ -110,13 +110,13 @@ export default function EditMealPage({ params }: { params: Promise<{ id: string 
   };
 
   if (loading) return <AppShell><LoadingState /></AppShell>;
-  if (!meal) return <AppShell><p className="text-stone-500">Meal not found.</p></AppShell>;
+  if (!meal) return <AppShell><p className="text-slate-500">Meal not found.</p></AppShell>;
 
   return (
     <AppShell>
-      <h2 className="mb-1 text-lg font-semibold text-stone-800">Edit meal</h2>
+      <h2 className="mb-1 text-lg font-semibold text-slate-800">Edit meal</h2>
       {meal.description && (
-        <p className="mb-4 text-sm text-stone-500">{meal.description}</p>
+        <p className="mb-4 text-sm text-slate-500">{meal.description}</p>
       )}
 
       <MealReviewTable
@@ -131,14 +131,14 @@ export default function EditMealPage({ params }: { params: Promise<{ id: string 
       <div className="mt-5 flex gap-3">
         <button
           onClick={() => router.push('/')}
-          className="flex-1 rounded-xl border border-stone-300 py-3 text-sm font-medium text-stone-600 transition hover:bg-stone-50"
+          className="flex-1 rounded-xl border border-slate-300 py-3 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
         >
           Cancel
         </button>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="flex-1 rounded-xl bg-amber-500 py-3 text-sm font-semibold text-white transition hover:bg-amber-600 disabled:opacity-50"
+          className="flex-1 rounded-xl bg-indigo-500 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600 disabled:opacity-50"
         >
           {saving ? 'Saving...' : 'Save changes'}
         </button>

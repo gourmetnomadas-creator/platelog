@@ -33,13 +33,13 @@ export default function IngredientRow({
   };
 
   return (
-    <div className="rounded-lg border border-stone-200 bg-white p-3">
+    <div className="rounded-lg border border-slate-200 bg-white p-3">
       <div className="mb-2 flex items-start justify-between">
         <input
           type="text"
           value={foodName}
           onChange={(e) => handleChange('foodName', e.target.value)}
-          className="flex-1 rounded border border-stone-200 px-2 py-1 text-sm font-medium text-stone-800 outline-none focus:border-amber-400"
+          className="flex-1 rounded border border-slate-200 px-2 py-1 text-sm font-medium text-slate-800 outline-none focus:border-indigo-400"
         />
         <button
           type="button"
@@ -51,63 +51,63 @@ export default function IngredientRow({
       </div>
       <div className="grid grid-cols-5 gap-2 text-xs">
         <div>
-          <label className="block text-stone-400">Grams</label>
+          <label className="block text-slate-400">Grams</label>
           <input
             type="number"
             value={grams}
             onChange={(e) => handleChange('grams', e.target.value)}
-            className="w-full rounded border border-stone-200 px-1.5 py-1 text-center outline-none focus:border-amber-400"
+            className="w-full rounded border border-slate-200 px-1.5 py-1 text-center outline-none focus:border-indigo-400"
             min="0"
             step="1"
           />
         </div>
         <div>
-          <label className="block text-stone-400">kcal/100g</label>
+          <label className="block text-slate-400">kcal/100g</label>
           <input
             type="number"
             value={kcalPer100g}
             onChange={(e) => handleChange('kcalPer100g', e.target.value)}
-            className="w-full rounded border border-stone-200 px-1.5 py-1 text-center outline-none focus:border-amber-400"
+            className="w-full rounded border border-slate-200 px-1.5 py-1 text-center outline-none focus:border-indigo-400"
             min="0"
             step="0.1"
           />
         </div>
         <div>
-          <label className="block text-stone-400">Protein</label>
+          <label className="block text-slate-400">Protein</label>
           <input
             type="number"
             value={proteinPer100g}
             onChange={(e) => handleChange('proteinPer100g', e.target.value)}
-            className="w-full rounded border border-stone-200 px-1.5 py-1 text-center outline-none focus:border-amber-400"
+            className="w-full rounded border border-slate-200 px-1.5 py-1 text-center outline-none focus:border-indigo-400"
             min="0"
             step="0.1"
           />
         </div>
         <div>
-          <label className="block text-stone-400">Carbs</label>
+          <label className="block text-slate-400">Carbs</label>
           <input
             type="number"
             value={carbsPer100g}
             onChange={(e) => handleChange('carbsPer100g', e.target.value)}
-            className="w-full rounded border border-stone-200 px-1.5 py-1 text-center outline-none focus:border-amber-400"
+            className="w-full rounded border border-slate-200 px-1.5 py-1 text-center outline-none focus:border-indigo-400"
             min="0"
             step="0.1"
           />
         </div>
         <div>
-          <label className="block text-stone-400">Fat</label>
+          <label className="block text-slate-400">Fat</label>
           <input
             type="number"
             value={fatPer100g}
             onChange={(e) => handleChange('fatPer100g', e.target.value)}
-            className="w-full rounded border border-stone-200 px-1.5 py-1 text-center outline-none focus:border-amber-400"
+            className="w-full rounded border border-slate-200 px-1.5 py-1 text-center outline-none focus:border-indigo-400"
             min="0"
             step="0.1"
           />
         </div>
       </div>
       {(confidence || source) && (
-        <div className="mt-1 flex gap-3 text-[10px] text-stone-400">
+        <div className="mt-1 flex gap-3 text-[10px] text-slate-400">
           {confidence && <span>Confidence: {Math.round(confidence * 100)}%</span>}
           {source && <span>Source: {source}</span>}
         </div>

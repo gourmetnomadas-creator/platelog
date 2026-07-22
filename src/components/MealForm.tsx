@@ -49,7 +49,7 @@ export default function MealForm({ onSubmit, loading }: MealFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-stone-700">Meal type</label>
+        <label className="mb-1.5 block text-sm font-medium text-slate-700">Meal type</label>
         <div className="grid grid-cols-4 gap-2">
           {(['breakfast', 'lunch', 'dinner', 'snack'] as MealType[]).map((type) => (
             <button
@@ -58,8 +58,8 @@ export default function MealForm({ onSubmit, loading }: MealFormProps) {
               onClick={() => setMealType(type)}
               className={`rounded-lg py-2 text-sm font-medium capitalize transition ${
                 mealType === type
-                  ? 'bg-amber-500 text-white'
-                  : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                  ? 'bg-indigo-500 text-white'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
               {type}
@@ -69,7 +69,7 @@ export default function MealForm({ onSubmit, loading }: MealFormProps) {
       </div>
 
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-stone-700">Photo</label>
+        <label className="mb-1.5 block text-sm font-medium text-slate-700">Photo</label>
         <MealPhotoInput
           photoPreview={imageBase64 ? `data:image/jpeg;base64,${imageBase64}` : null}
           onPhotoCapture={setImageBase64}
@@ -78,7 +78,7 @@ export default function MealForm({ onSubmit, loading }: MealFormProps) {
       </div>
 
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-stone-700">
+        <label className="mb-1.5 block text-sm font-medium text-slate-700">
           Description
         </label>
         <textarea
@@ -86,12 +86,12 @@ export default function MealForm({ onSubmit, loading }: MealFormProps) {
           onChange={(e) => setDescription(e.target.value)}
           placeholder='e.g. "oatmeal with banana" or "200g oatmeal and one banana"'
           rows={2}
-          className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-amber-400 focus:ring-1 focus:ring-amber-400"
+          className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"
         />
       </div>
 
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-stone-700">
+        <label className="mb-1.5 block text-sm font-medium text-slate-700">
           Total weight in grams
         </label>
         <input
@@ -101,12 +101,12 @@ export default function MealForm({ onSubmit, loading }: MealFormProps) {
           placeholder="e.g. 200"
           min="1"
           step="1"
-          className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-amber-400 focus:ring-1 focus:ring-amber-400"
+          className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"
         />
       </div>
 
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-stone-700">
+        <label className="mb-1.5 block text-sm font-medium text-slate-700">
           What does the weight refer to?
         </label>
         <div className="space-y-2">
@@ -121,8 +121,8 @@ export default function MealForm({ onSubmit, loading }: MealFormProps) {
               key={option.value}
               className={`flex cursor-pointer items-center rounded-lg border px-3 py-2 text-sm transition ${
                 weightContext === option.value
-                  ? 'border-amber-400 bg-amber-50 text-amber-700'
-                  : 'border-stone-200 text-stone-600 hover:border-stone-300'
+                  ? 'border-indigo-400 bg-indigo-50 text-indigo-700'
+                  : 'border-slate-200 text-slate-600 hover:border-slate-300'
               }`}
             >
               <input
@@ -131,7 +131,7 @@ export default function MealForm({ onSubmit, loading }: MealFormProps) {
                 value={option.value}
                 checked={weightContext === option.value}
                 onChange={() => setWeightContext(option.value)}
-                className="mr-2 accent-amber-500"
+                className="mr-2 accent-indigo-500"
               />
               {option.label}
             </label>
@@ -146,7 +146,7 @@ export default function MealForm({ onSubmit, loading }: MealFormProps) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-xl bg-amber-500 py-3 text-base font-semibold text-white transition hover:bg-amber-600 active:bg-amber-700 disabled:opacity-50"
+        className="w-full rounded-xl bg-indigo-500 py-3 text-base font-semibold text-white transition hover:bg-indigo-600 active:bg-indigo-700 disabled:opacity-50"
       >
         {loading ? 'Analyzing...' : 'Analyze meal'}
       </button>

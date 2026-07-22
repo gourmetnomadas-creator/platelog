@@ -51,7 +51,7 @@ export default function MealPhotoInput({
           <button
             type="button"
             onClick={onClear}
-            className="absolute right-2 top-2 rounded-full bg-white/80 px-2 py-1 text-xs text-stone-700 backdrop-blur"
+            className="absolute right-2 top-2 rounded-full bg-white/80 px-2 py-1 text-xs text-slate-700 backdrop-blur"
           >
             Remove
           </button>
@@ -60,10 +60,10 @@ export default function MealPhotoInput({
         <button
           type="button"
           onClick={handleCapture}
-          className="flex h-48 w-full flex-col items-center justify-center rounded-xl border-2 border-dashed border-stone-300 bg-stone-50 transition hover:bg-stone-100"
+          className="flex h-48 w-full flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 transition hover:bg-slate-100"
         >
           <span className="text-3xl">📷</span>
-          <span className="mt-2 text-sm text-stone-500">Take photo or choose from gallery</span>
+          <span className="mt-2 text-sm text-slate-500">Take photo or choose from gallery</span>
         </button>
       )}
     </div>

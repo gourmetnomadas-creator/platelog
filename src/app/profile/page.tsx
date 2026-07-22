@@ -62,12 +62,12 @@ export default function ProfilePage() {
 
   return (
     <AppShell>
-      <h2 className="mb-4 text-lg font-semibold text-stone-800">Profile</h2>
+      <h2 className="mb-4 text-lg font-semibold text-slate-800">Profile</h2>
       <ProfileForm profile={profile} onSave={handleSave} saving={saving} />
       <div className="mt-6">
         <button
           onClick={() => router.push('/weight')}
-          className="w-full rounded-xl border border-stone-200 py-3 text-sm font-medium text-stone-600 transition hover:bg-stone-50"
+          className="w-full rounded-xl border border-slate-200 py-3 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
         >
           Log body weight
         </button>
@@ -87,7 +87,7 @@ export default function ProfilePage() {
         </div>
       )}
       {DEV_MODE && (
-        <div className="mt-4 rounded-xl bg-amber-50 p-3 text-center text-xs text-amber-600">
+        <div className="mt-4 rounded-xl bg-indigo-50 p-3 text-center text-xs text-indigo-600">
           Dev mode — auth bypassed
         </div>
       )}

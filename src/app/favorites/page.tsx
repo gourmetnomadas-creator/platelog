@@ -133,34 +133,34 @@ export default function FavoritesPage() {
   return (
     <AppShell>
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-stone-800">Favorites</h2>
+        <h2 className="text-lg font-semibold text-slate-800">Favorites</h2>
         <button
           onClick={() => setShowNewForm(!showNewForm)}
-          className="rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-medium text-white"
+          className="rounded-lg bg-indigo-500 px-3 py-1.5 text-xs font-medium text-white"
         >
           + New
         </button>
       </div>
 
       {showNewForm && (
-        <div className="mb-4 space-y-2 rounded-xl border border-stone-200 bg-white p-4">
+        <div className="mb-4 space-y-2 rounded-xl border border-slate-200 bg-white p-4">
           <input
             type="text"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
             placeholder="Meal name"
-            className="w-full rounded-lg border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+            className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400"
           />
           <input
             type="text"
             value={newDescription}
             onChange={(e) => setNewDescription(e.target.value)}
             placeholder="Description (optional)"
-            className="w-full rounded-lg border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+            className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400"
           />
           <button
             onClick={handleCreate}
-            className="w-full rounded-lg bg-amber-500 py-2 text-sm font-medium text-white"
+            className="w-full rounded-lg bg-indigo-500 py-2 text-sm font-medium text-white"
           >
             Save favorite
           </button>

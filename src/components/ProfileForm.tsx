@@ -55,53 +55,53 @@ export default function ProfileForm({ profile, onSave, saving }: ProfileFormProp
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="mb-1 block text-sm font-medium text-stone-700">Name</label>
+        <label className="mb-1 block text-sm font-medium text-slate-700">Name</label>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+          className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400"
           placeholder="Your name"
         />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="mb-1 block text-sm font-medium text-stone-700">Height (cm)</label>
+          <label className="mb-1 block text-sm font-medium text-slate-700">Height (cm)</label>
           <input
             type="number"
             value={heightCm}
             onChange={(e) => setHeightCm(e.target.value)}
-            className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+            className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400"
           />
         </div>
         <div>
-          <label className="mb-1 block text-sm font-medium text-stone-700">Weight (kg)</label>
+          <label className="mb-1 block text-sm font-medium text-slate-700">Weight (kg)</label>
           <input
             type="number"
             value={weightKg}
             onChange={(e) => setWeightKg(e.target.value)}
-            className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+            className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400"
           />
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="mb-1 block text-sm font-medium text-stone-700">Age</label>
+          <label className="mb-1 block text-sm font-medium text-slate-700">Age</label>
           <input
             type="number"
             value={age}
             onChange={(e) => setAge(e.target.value)}
-            className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+            className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400"
           />
         </div>
         <div>
-          <label className="mb-1 block text-sm font-medium text-stone-700">Sex</label>
+          <label className="mb-1 block text-sm font-medium text-slate-700">Sex</label>
           <select
             value={sex}
             onChange={(e) => setSex(e.target.value)}
-            className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+            className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400"
           >
             <option value="">Select</option>
             <option value="male">Male</option>
@@ -111,11 +111,11 @@ export default function ProfileForm({ profile, onSave, saving }: ProfileFormProp
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-stone-700">Activity level</label>
+        <label className="mb-1 block text-sm font-medium text-slate-700">Activity level</label>
         <select
           value={activityLevel}
           onChange={(e) => setActivityLevel(e.target.value as ActivityLevel)}
-          className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+          className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400"
         >
           <option value="sedentary">Sedentary</option>
           <option value="light">Light exercise</option>
@@ -126,11 +126,11 @@ export default function ProfileForm({ profile, onSave, saving }: ProfileFormProp
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-stone-700">Goal</label>
+        <label className="mb-1 block text-sm font-medium text-slate-700">Goal</label>
         <select
           value={goalType}
           onChange={(e) => setGoalType(e.target.value as GoalType)}
-          className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+          className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400"
         >
           <option value="maintain">Maintain weight</option>
           <option value="mild_deficit">Mild deficit</option>
@@ -141,23 +141,23 @@ export default function ProfileForm({ profile, onSave, saving }: ProfileFormProp
 
       {goalType === 'manual' && (
         <div>
-          <label className="mb-1 block text-sm font-medium text-stone-700">
+          <label className="mb-1 block text-sm font-medium text-slate-700">
             Daily calorie target
           </label>
           <input
             type="number"
             value={manualTarget}
             onChange={(e) => setManualTarget(e.target.value)}
-            className="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+            className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400"
           />
         </div>
       )}
 
       {calculatedTarget && goalType !== 'manual' && (
-        <div className="rounded-xl bg-amber-50 p-4 text-center">
-          <p className="text-xs text-stone-500">Estimated maintenance</p>
-          <p className="text-2xl font-bold text-stone-800">{calculatedTarget} kcal</p>
-          <p className="mt-1 text-[10px] text-stone-400">
+        <div className="rounded-xl bg-indigo-50 p-4 text-center">
+          <p className="text-xs text-slate-500">Estimated maintenance</p>
+          <p className="text-2xl font-bold text-slate-800">{calculatedTarget} kcal</p>
+          <p className="mt-1 text-[10px] text-slate-400">
             This is an estimate for personal tracking, not medical advice.
           </p>
         </div>
@@ -166,7 +166,7 @@ export default function ProfileForm({ profile, onSave, saving }: ProfileFormProp
       <button
         type="submit"
         disabled={saving}
-        className="w-full rounded-xl bg-amber-500 py-3 text-sm font-semibold text-white transition hover:bg-amber-600 disabled:opacity-50"
+        className="w-full rounded-xl bg-indigo-500 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600 disabled:opacity-50"
       >
         {saving ? 'Saving...' : 'Save profile'}
       </button>

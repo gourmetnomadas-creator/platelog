@@ -20,12 +20,12 @@ export default function ConfirmDeleteDialog({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
       <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
-        <h3 className="text-lg font-semibold text-stone-800">{title}</h3>
-        <p className="mt-2 text-sm text-stone-600">{message}</p>
+        <h3 className="text-lg font-semibold text-slate-800">{title}</h3>
+        <p className="mt-2 text-sm text-slate-600">{message}</p>
         <div className="mt-6 flex gap-3">
           <button
             onClick={onCancel}
-            className="flex-1 rounded-lg border border-stone-300 py-2 text-sm font-medium text-stone-700 transition hover:bg-stone-50"
+            className="flex-1 rounded-lg border border-slate-300 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
           >
             Cancel
           </button>

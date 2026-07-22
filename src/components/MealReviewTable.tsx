@@ -60,13 +60,13 @@ export default function MealReviewTable({
       {warnings.map((w, i) => (
         <div
           key={i}
-          className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-xs text-amber-700"
+          className="rounded-lg border border-indigo-200 bg-indigo-50 px-4 py-2 text-xs text-indigo-700"
         >
           ⚠️ {w}
         </div>
       ))}
 
-      <div className="rounded-lg bg-stone-50 px-4 py-2 text-center text-xs text-stone-500">
+      <div className="rounded-lg bg-slate-50 px-4 py-2 text-center text-xs text-slate-500">
         AI confidence: {Math.round(confidence * 100)}%
       </div>
 
@@ -92,29 +92,29 @@ export default function MealReviewTable({
       <button
         type="button"
         onClick={handleAdd}
-        className="w-full rounded-lg border-2 border-dashed border-stone-300 py-2 text-sm text-stone-500 transition hover:border-stone-400 hover:text-stone-600"
+        className="w-full rounded-lg border-2 border-dashed border-slate-300 py-2 text-sm text-slate-500 transition hover:border-slate-400 hover:text-slate-600"
       >
         + Add ingredient manually
       </button>
 
-      <div className="rounded-xl bg-amber-50 p-4">
-        <h4 className="mb-2 text-sm font-semibold text-stone-700">Totals</h4>
+      <div className="rounded-xl bg-indigo-50 p-4">
+        <h4 className="mb-2 text-sm font-semibold text-slate-700">Totals</h4>
         <div className="grid grid-cols-4 gap-2 text-center text-xs">
           <div>
-            <p className="text-lg font-bold text-stone-800">{Math.round(totals.totalKcal)}</p>
-            <p className="text-stone-500">kcal</p>
+            <p className="text-lg font-bold text-slate-800">{Math.round(totals.totalKcal)}</p>
+            <p className="text-slate-500">kcal</p>
           </div>
           <div>
-            <p className="text-lg font-bold text-stone-800">{Math.round(totals.totalProtein)}g</p>
-            <p className="text-stone-500">Protein</p>
+            <p className="text-lg font-bold text-slate-800">{Math.round(totals.totalProtein)}g</p>
+            <p className="text-slate-500">Protein</p>
           </div>
           <div>
-            <p className="text-lg font-bold text-stone-800">{Math.round(totals.totalCarbs)}g</p>
-            <p className="text-stone-500">Carbs</p>
+            <p className="text-lg font-bold text-slate-800">{Math.round(totals.totalCarbs)}g</p>
+            <p className="text-slate-500">Carbs</p>
           </div>
           <div>
-            <p className="text-lg font-bold text-stone-800">{Math.round(totals.totalFat)}g</p>
-            <p className="text-stone-500">Fat</p>
+            <p className="text-lg font-bold text-slate-800">{Math.round(totals.totalFat)}g</p>
+            <p className="text-slate-500">Fat</p>
           </div>
         </div>
       </div>

@@ -142,7 +142,7 @@ export default function AddMealPage() {
 
   return (
     <AppShell>
-      <h2 className="mb-4 text-lg font-semibold text-stone-800">
+      <h2 className="mb-4 text-lg font-semibold text-slate-800">
         {analysis ? 'Review meal' : 'Add meal'}
       </h2>
 
@@ -162,14 +162,14 @@ export default function AddMealPage() {
                 setAnalysis(null);
                 setEditableItems([]);
               }}
-              className="flex-1 rounded-xl border border-stone-300 py-3 text-sm font-medium text-stone-600 transition hover:bg-stone-50"
+              className="flex-1 rounded-xl border border-slate-300 py-3 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
             >
               Back
             </button>
             <button
               onClick={handleSave}
               disabled={saving}
-              className="flex-1 rounded-xl bg-amber-500 py-3 text-sm font-semibold text-white transition hover:bg-amber-600 disabled:opacity-50"
+              className="flex-1 rounded-xl bg-indigo-500 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600 disabled:opacity-50"
             >
               {saving ? 'Saving...' : 'Save meal'}
             </button>

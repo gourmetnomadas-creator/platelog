@@ -96,7 +96,7 @@ export default function TodayDashboard() {
 
   return (
     <AppShell>
-      <h2 className="mb-4 text-sm font-medium text-stone-500">{formatDate(new Date().toISOString())}</h2>
+      <h2 className="mb-4 text-sm font-medium text-slate-500">{formatDate(new Date().toISOString())}</h2>
 
       <DailySummaryCard
         {...totals}
@@ -107,7 +107,7 @@ export default function TodayDashboard() {
         {groupedMeals.map((group) =>
           group.meals.length > 0 ? (
             <div key={group.type}>
-              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-400">
+              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
                 {group.label}
               </h3>
               <div className="space-y-2">

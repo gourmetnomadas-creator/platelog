@@ -132,7 +132,7 @@ export default function HistoryPage() {
 
   return (
     <AppShell>
-      <h2 className="mb-4 text-lg font-semibold text-stone-800">Meal history</h2>
+      <h2 className="mb-4 text-lg font-semibold text-slate-800">Meal history</h2>
 
       <div className="mb-4 flex gap-2">
         <input
@@ -140,13 +140,13 @@ export default function HistoryPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search meals..."
-          className="flex-1 rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+          className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400"
         />
         <input
           type="date"
           value={dateFilter}
           onChange={(e) => setDateFilter(e.target.value)}
-          className="rounded-xl border border-stone-200 px-3 py-2 text-sm outline-none focus:border-amber-400"
+          className="rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400"
         />
       </div>
 
@@ -161,39 +161,39 @@ export default function HistoryPage() {
           {filteredMeals.map((meal) => (
             <div
               key={meal.id}
-              className="rounded-xl border border-stone-200 bg-white p-3"
+              className="rounded-xl border border-slate-200 bg-white p-3"
             >
               <div className="flex items-start justify-between">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="rounded bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700">
+                    <span className="rounded bg-indigo-100 px-2 py-0.5 text-[10px] font-medium text-indigo-700">
                       {getMealTypeLabel(meal.meal_type)}
                     </span>
-                    <span className="text-[10px] text-stone-400">
+                    <span className="text-[10px] text-slate-400">
                       {formatShortDate(meal.meal_time)} • {formatTime(meal.meal_time)}
                     </span>
                   </div>
                   {meal.description && (
-                    <p className="mt-1 truncate text-sm text-stone-700">{meal.description}</p>
+                    <p className="mt-1 truncate text-sm text-slate-700">{meal.description}</p>
                   )}
-                  <div className="mt-1 flex gap-3 text-xs font-medium text-stone-600">
+                  <div className="mt-1 flex gap-3 text-xs font-medium text-slate-600">
                     <span>{Math.round(meal.total_kcal)} kcal</span>
-                    <span className="text-stone-400">P {Math.round(meal.total_protein_g)}g</span>
-                    <span className="text-stone-400">C {Math.round(meal.total_carbs_g)}g</span>
-                    <span className="text-stone-400">F {Math.round(meal.total_fat_g)}g</span>
+                    <span className="text-slate-400">P {Math.round(meal.total_protein_g)}g</span>
+                    <span className="text-slate-400">C {Math.round(meal.total_carbs_g)}g</span>
+                    <span className="text-slate-400">F {Math.round(meal.total_fat_g)}g</span>
                   </div>
                 </div>
               </div>
               <div className="mt-2 flex gap-2">
                 <button
                   onClick={() => handleRepeat(meal)}
-                  className="flex-1 rounded-lg bg-amber-500 py-1.5 text-xs font-medium text-white transition hover:bg-amber-600"
+                  className="flex-1 rounded-lg bg-indigo-500 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-600"
                 >
                   Repeat
                 </button>
                 <button
                   onClick={() => router.push(`/meals/${meal.id}`)}
-                  className="flex-1 rounded-lg border border-stone-300 py-1.5 text-xs font-medium text-stone-600 transition hover:bg-stone-50"
+                  className="flex-1 rounded-lg border border-slate-300 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-50"
                 >
                   Edit
                 </button>

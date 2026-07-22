@@ -64,9 +64,9 @@ export default function WeightPage() {
   return (
     <AppShell>
       <div className="mb-4">
-        <h2 className="text-lg font-semibold text-stone-800">Body weight</h2>
+        <h2 className="text-lg font-semibold text-slate-800">Body weight</h2>
         {latestWeight && (
-          <p className="text-3xl font-bold text-stone-800">{latestWeight} <span className="text-base font-normal text-stone-400">kg</span></p>
+          <p className="text-3xl font-bold text-slate-800">{latestWeight} <span className="text-base font-normal text-slate-400">kg</span></p>
         )}
       </div>
 
@@ -74,16 +74,16 @@ export default function WeightPage() {
 
       <div className="mt-6 space-y-2">
         {logs.length === 0 ? (
-          <p className="text-center text-sm text-stone-400">No weight logs yet.</p>
+          <p className="text-center text-sm text-slate-400">No weight logs yet.</p>
         ) : (
           logs.map((log) => (
             <div
               key={log.id}
-              className="flex items-center justify-between rounded-lg border border-stone-200 bg-white px-4 py-3"
+              className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-4 py-3"
             >
-              <span className="text-sm text-stone-500">{log.date}</span>
-              <span className="font-medium text-stone-700">{log.weight_kg} kg</span>
-              {log.notes && <span className="text-xs text-stone-400">{log.notes}</span>}
+              <span className="text-sm text-slate-500">{log.date}</span>
+              <span className="font-medium text-slate-700">{log.weight_kg} kg</span>
+              {log.notes && <span className="text-xs text-slate-400">{log.notes}</span>}
             </div>
           ))
         )}
