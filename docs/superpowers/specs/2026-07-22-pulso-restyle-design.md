@@ -12,6 +12,13 @@ cubre solo el restyle visual. Fuera de alcance: landing pública, actividad
 física, suplementos, micronutrientes, plan personalizado, puntaje de
 longevidad, coach IA — cada uno es su propio sub-proyecto futuro.
 
+Referencia visual: capturas de la app real de Pulso (no solo la landing) —
+`Progreso`/`Morfeo`/`Registrar`/`Plan`/`Mi data` como nav inferior de 5 tabs,
+botones píldora (`rounded-full`) en acento índigo vivo, headings en negro/gris
+muy oscuro (no navy), tarjetas blancas `rounded-2xl` con sombra suave sobre
+fondo gris-lavanda muy claro, tab activo con fondo píldora tenue detrás del
+ícono.
+
 ## Alcance
 
 Cambio puramente visual (clases Tailwind + tipografía + fondo), sin tocar
@@ -21,11 +28,11 @@ lógica de negocio, rutas API, ni schema de Supabase.
 
 | Uso | Antes | Después |
 |---|---|---|
-| Texto principal / headings | `stone-800/900` | `indigo-950` (navy oscuro) |
+| Texto principal / headings | `stone-800/900` | `slate-900` (negro/gris muy oscuro, no navy) |
 | Texto secundario / labels | `stone-400/500` | `slate-400/500` |
 | Bordes neutros | `stone-200/300` | `slate-200` |
-| Acento primario (botones, links, nav activo, focus rings) | `amber-400/500/600` | `indigo-600` (hover `indigo-700`) |
-| Fondos sutiles de estado (ej. badges, alerts) | `amber-50/100`, `stone-50/100` | `indigo-50/100` |
+| Acento primario (botones, links, nav activo, focus rings) | `amber-400/500/600` | `indigo-500` (hover `indigo-600`) |
+| Fondos sutiles de estado (ej. badges, alerts, pill activo en nav) | `amber-50/100`, `stone-50/100` | `indigo-50/100` |
 | Fondo de página | blanco plano (`bg-white` en `AppShell`) | degradé sutil lila→blanco |
 | Errores / destructivo | `red-*` | sin cambios |
 
@@ -44,9 +51,16 @@ parte de Next.js), reemplazando el font-stack del sistema en `layout.tsx` /
 (`MealCard`, `DailySummaryCard`, `FavoriteMealCard`, `MealReviewTable`, etc.),
 para que "floten" sobre el nuevo fondo con degradé.
 
+### Botones
+
+Botones primarios pasan de su forma actual a `rounded-full` (píldora), fondo
+`indigo-500`, texto blanco, bold.
+
 ### Nav inferior
 
-`BottomNav.tsx`: ícono/label activo pasa de `amber-600` a `indigo-600`.
+`BottomNav.tsx`: ícono/label activo pasa de `amber-600` a `indigo-600`, y el
+ícono activo gana un fondo píldora `indigo-50` detrás (como el tab "Mi data"
+resaltado en Pulso).
 
 ## Fuera de alcance
 
