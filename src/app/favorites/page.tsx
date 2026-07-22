@@ -51,13 +51,15 @@ export default function FavoritesPage() {
     if (!session) return;
     const supabase = createClient();
     const today = new Date().toISOString().split('T')[0];
+    const hour = new Date().getHours();
+    const mealType = hour < 11 ? 'breakfast' : hour < 15 ? 'lunch' : hour < 19 ? 'snack' : 'dinner';
 
     const { data: meal } = await supabase
       .from('meals')
       .insert({
         user_id: session.user.id,
         date: today,
-        meal_type: 'lunch',
+        meal_type: mealType,
         description: favorite.description || favorite.name,
         total_weight_g: favorite.default_total_weight_g,
         status: 'draft',

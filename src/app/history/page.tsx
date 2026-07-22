@@ -22,6 +22,7 @@ export default function HistoryPage() {
   const [dateFilter, setDateFilter] = useState('');
   const [deleteTarget, setDeleteTarget] = useState<Meal | null>(null);
   const [session, setSession] = useState<any>(null);
+  const [favoritedIds, setFavoritedIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const supabase = createClient();
@@ -127,6 +128,44 @@ export default function HistoryPage() {
     router.push('/');
   };
 
+  const handleSaveFavorite = async (meal: Meal) => {
+    if (!session || favoritedIds.has(meal.id)) return;
+    const supabase = createClient();
+
+    const { data: favorite } = await supabase
+      .from('favorite_meals')
+      .insert({
+        user_id: session.user.id,
+        name: (meal.description || getMealTypeLabel(meal.meal_type)).slice(0, 60),
+        description: meal.description,
+        default_total_weight_g: meal.total_weight_g,
+      })
+      .select()
+      .single();
+
+    if (favorite) {
+      const { data: items } = await supabase
+        .from('meal_items')
+        .select('*')
+        .eq('meal_id', meal.id);
+
+      if (items && items.length > 0) {
+        await supabase.from('favorite_meal_items').insert(
+          items.map((item: any) => ({
+            favorite_meal_id: favorite.id,
+            food_name: item.food_name,
+            grams: item.grams,
+            kcal_per_100g: item.kcal_per_100g,
+            protein_per_100g: item.protein_per_100g,
+            carbs_per_100g: item.carbs_per_100g,
+            fat_per_100g: item.fat_per_100g,
+          }))
+        );
+      }
+      setFavoritedIds((prev) => new Set(prev).add(meal.id));
+    }
+  };
+
   if (loading) return <AppShell><LoadingState /></AppShell>;
   if (!session) return null;
 
@@ -196,6 +235,16 @@ export default function HistoryPage() {
                   className="flex-1 rounded-lg border border-slate-300 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-50"
                 >
                   Edit
+                </button>
+                <button
+                  onClick={() => handleSaveFavorite(meal)}
+                  className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
+                    favoritedIds.has(meal.id)
+                      ? 'border-indigo-200 bg-indigo-50 text-indigo-600'
+                      : 'border-slate-300 text-slate-600 hover:bg-slate-50'
+                  }`}
+                >
+                  {favoritedIds.has(meal.id) ? '★' : '☆'}
                 </button>
                 <button
                   onClick={() => setDeleteTarget(meal)}
