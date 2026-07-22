@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafaf9;
-  --foreground: #1c1917;
+  --background: #eef0fb;
+  --foreground: #0f172a;
 }
 
 @theme inline {
@@ -11,7 +11,7 @@
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(180deg, var(--background) 0%, #fafbfe 480px, #fafbfe 100%);
   color: var(--foreground);
   font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
