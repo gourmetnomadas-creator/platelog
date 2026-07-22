@@ -11,7 +11,7 @@ interface MealCardProps {
 
 export default function MealCard({ meal, onEdit, onDelete }: MealCardProps) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-3 transition hover:border-slate-300">
+    <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm transition hover:border-slate-300">
       <div className="flex gap-3">
         {meal.photo_url ? (
           <img

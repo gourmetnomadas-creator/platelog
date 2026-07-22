@@ -18,7 +18,7 @@ export default function MacroSummary({
   const remaining = targetKcal ? targetKcal - kcal : null;
 
   return (
-    <div className="rounded-xl bg-slate-50 p-4">
+    <div className="rounded-2xl bg-white p-4 shadow-sm">
       {showTarget && targetKcal && (
         <div className="mb-3 flex items-center justify-between">
           <span className="text-sm text-slate-500">Daily target</span>

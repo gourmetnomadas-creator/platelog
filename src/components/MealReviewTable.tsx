@@ -97,7 +97,7 @@ export default function MealReviewTable({
         + Add ingredient manually
       </button>
 
-      <div className="rounded-xl bg-indigo-50 p-4">
+      <div className="rounded-2xl bg-indigo-50 p-4 shadow-sm">
         <h4 className="mb-2 text-sm font-semibold text-slate-700">Totals</h4>
         <div className="grid grid-cols-4 gap-2 text-center text-xs">
           <div>

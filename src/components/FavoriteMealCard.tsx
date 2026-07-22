@@ -21,7 +21,7 @@ export default function FavoriteMealCard({
     ) ?? 0;
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 transition hover:border-slate-300">
+    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-slate-300">
       <div className="flex items-start justify-between">
         <div className="min-w-0 flex-1">
           <h3 className="font-medium text-slate-800">{favorite.name}</h3>
