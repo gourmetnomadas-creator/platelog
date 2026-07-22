@@ -46,7 +46,7 @@ export default function WeightLogForm({ onSave, saving }: WeightLogFormProps) {
       <button
         type="submit"
         disabled={saving || !weightKg}
-        className="rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-600 disabled:opacity-50"
+        className="rounded-full bg-indigo-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-600 disabled:opacity-50"
       >
         Log
       </button>

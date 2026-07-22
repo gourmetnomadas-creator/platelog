@@ -146,7 +146,7 @@ export default function MealForm({ onSubmit, loading }: MealFormProps) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-xl bg-indigo-500 py-3 text-base font-semibold text-white transition hover:bg-indigo-600 active:bg-indigo-700 disabled:opacity-50"
+        className="w-full rounded-full bg-indigo-500 py-3 text-base font-semibold text-white transition hover:bg-indigo-600 active:bg-indigo-700 disabled:opacity-50"
       >
         {loading ? 'Analyzing...' : 'Analyze meal'}
       </button>

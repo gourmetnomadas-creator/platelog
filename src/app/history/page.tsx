@@ -187,7 +187,7 @@ export default function HistoryPage() {
               <div className="mt-2 flex gap-2">
                 <button
                   onClick={() => handleRepeat(meal)}
-                  className="flex-1 rounded-lg bg-indigo-500 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-600"
+                  className="flex-1 rounded-full bg-indigo-500 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-600"
                 >
                   Repeat
                 </button>

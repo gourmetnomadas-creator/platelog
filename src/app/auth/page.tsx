@@ -61,7 +61,7 @@ export default function AuthPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-indigo-500 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600 disabled:opacity-50"
+            className="w-full rounded-full bg-indigo-500 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600 disabled:opacity-50"
           >
             {loading ? 'Sending...' : 'Send magic link'}
           </button>

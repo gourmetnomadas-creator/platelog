@@ -138,7 +138,7 @@ export default function EditMealPage({ params }: { params: Promise<{ id: string 
         <button
           onClick={handleSave}
           disabled={saving}
-          className="flex-1 rounded-xl bg-indigo-500 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600 disabled:opacity-50"
+          className="flex-1 rounded-full bg-indigo-500 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600 disabled:opacity-50"
         >
           {saving ? 'Saving...' : 'Save changes'}
         </button>

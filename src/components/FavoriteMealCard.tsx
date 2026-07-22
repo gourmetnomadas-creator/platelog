@@ -52,7 +52,7 @@ export default function FavoriteMealCard({
         <div className="ml-3 flex flex-col gap-1">
           <button
             onClick={() => onUse(favorite)}
-            className="rounded-lg bg-indigo-500 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-600"
+            className="rounded-full bg-indigo-500 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-600"
           >
             Use
           </button>

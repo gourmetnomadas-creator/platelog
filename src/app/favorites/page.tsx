@@ -136,7 +136,7 @@ export default function FavoritesPage() {
         <h2 className="text-lg font-semibold text-slate-800">Favorites</h2>
         <button
           onClick={() => setShowNewForm(!showNewForm)}
-          className="rounded-lg bg-indigo-500 px-3 py-1.5 text-xs font-medium text-white"
+          className="rounded-full bg-indigo-500 px-3 py-1.5 text-xs font-medium text-white"
         >
           + New
         </button>
@@ -160,7 +160,7 @@ export default function FavoritesPage() {
           />
           <button
             onClick={handleCreate}
-            className="w-full rounded-lg bg-indigo-500 py-2 text-sm font-medium text-white"
+            className="w-full rounded-full bg-indigo-500 py-2 text-sm font-medium text-white"
           >
             Save favorite
           </button>
