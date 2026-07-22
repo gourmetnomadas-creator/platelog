@@ -4,15 +4,21 @@ import { analyzeMealSchema } from '@/lib/validations';
 const AI_PROVIDER = process.env.AI_PROVIDER || 'deepseek';
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || process.env.OPENAI_API_KEY;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 let _ai: any = null;
 async function getAIClient() {
   if (!_ai) {
+    const { default: OpenAI } = await import('openai');
     if (AI_PROVIDER === 'openai' && OPENAI_API_KEY) {
-      const { default: OpenAI } = await import('openai');
       _ai = new OpenAI({ apiKey: OPENAI_API_KEY });
+    } else if (AI_PROVIDER === 'gemini' && GEMINI_API_KEY) {
+      // Gemini free tier via its OpenAI-compatible endpoint
+      _ai = new OpenAI({
+        apiKey: GEMINI_API_KEY,
+        baseURL: 'https://generativelanguage.googleapis.com/v1beta/openai/',
+      });
     } else {
-      const { default: OpenAI } = await import('openai');
       _ai = new OpenAI({
         apiKey: DEEPSEEK_API_KEY || '',
         baseURL: 'https://api.deepseek.com',
@@ -24,6 +30,7 @@ async function getAIClient() {
 
 function getModel(): string {
   if (AI_PROVIDER === 'openai' && OPENAI_API_KEY) return 'gpt-4o-mini';
+  if (AI_PROVIDER === 'gemini' && GEMINI_API_KEY) return 'gemini-2.5-flash';
   return 'deepseek-chat';
 }
 
@@ -94,7 +101,7 @@ Weight context: ${weightContext.replace('_', ' ')}`;
       model,
       messages,
       temperature: 0.3,
-      ...(model === 'gpt-4o-mini' ? { response_format: { type: 'json_object' } } : {}),
+      ...(model !== 'deepseek-chat' ? { response_format: { type: 'json_object' } } : {}),
     });
 
     let text = completion.choices[0]?.message?.content;
