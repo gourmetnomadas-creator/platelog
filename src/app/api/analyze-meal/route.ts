@@ -30,7 +30,7 @@ async function getAIClient() {
 
 function getModel(): string {
   if (AI_PROVIDER === 'openai' && OPENAI_API_KEY) return 'gpt-4o-mini';
-  if (AI_PROVIDER === 'gemini' && GEMINI_API_KEY) return 'gemini-2.5-flash';
+  if (AI_PROVIDER === 'gemini' && GEMINI_API_KEY) return 'gemini-flash-latest';
   return 'deepseek-chat';
 }
 
