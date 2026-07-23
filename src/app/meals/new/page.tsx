@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { getUserSession } from '@/lib/session';
 import AppShell from '@/components/AppShell';
+import AddTabs from '@/components/AddTabs';
 import MealForm from '@/components/MealForm';
 import MealReviewTable from '@/components/MealReviewTable';
 import { AIAnalysisResult, AIAnalysisItem, MealType, WeightContext } from '@/types';
@@ -142,6 +143,7 @@ export default function AddMealPage() {
 
   return (
     <AppShell>
+      {!analysis && <AddTabs active="meal" />}
       <h2 className="mb-4 text-lg font-semibold text-slate-800">
         {analysis ? 'Review meal' : 'Add meal'}
       </h2>

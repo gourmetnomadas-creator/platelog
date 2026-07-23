@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { getUserSession } from '@/lib/session';
 import { Supplement, TimeOfDay } from '@/types';
+import AddTabs from '@/components/AddTabs';
 import AppShell from '@/components/AppShell';
 import LoadingState from '@/components/LoadingState';
 import ConfirmDeleteDialog from '@/components/ConfirmDeleteDialog';
