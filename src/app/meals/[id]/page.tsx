@@ -15,6 +15,7 @@ export default function EditMealPage({ params }: { params: Promise<{ id: string 
   const { id } = use(params);
   const router = useRouter();
   const [meal, setMeal] = useState<Meal | null>(null);
+  const [mealType, setMealType] = useState('lunch');
   const [items, setItems] = useState<AIAnalysisItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -43,6 +44,7 @@ export default function EditMealPage({ params }: { params: Promise<{ id: string 
 
     if (meal) {
       setMeal(meal);
+      setMealType(meal.meal_type);
       setItems(
         (meal.items || []).map((item: any) => ({
           foodName: item.food_name,
@@ -78,6 +80,7 @@ export default function EditMealPage({ params }: { params: Promise<{ id: string 
     await supabase
       .from('meals')
       .update({
+        meal_type: mealType,
         total_kcal: totals.totalKcal,
         total_protein_g: totals.totalProtein,
         total_carbs_g: totals.totalCarbs,
@@ -118,6 +121,26 @@ export default function EditMealPage({ params }: { params: Promise<{ id: string 
       {meal.description && (
         <p className="mb-4 text-sm text-slate-500">{meal.description}</p>
       )}
+
+      <div className="mb-4">
+        <label className="mb-1.5 block text-sm font-medium text-slate-700">Meal type</label>
+        <div className="grid grid-cols-4 gap-2">
+          {(['breakfast', 'lunch', 'dinner', 'snack'] as const).map((type) => (
+            <button
+              key={type}
+              type="button"
+              onClick={() => setMealType(type)}
+              className={`rounded-lg py-2 text-sm font-medium capitalize transition ${
+                mealType === type
+                  ? 'bg-indigo-500 text-white'
+                  : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+              }`}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <MealReviewTable
         items={items}
