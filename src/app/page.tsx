@@ -8,6 +8,7 @@ import { ageFromBirthdate, calculateDailyCalorieTarget } from '@/lib/calculation
 import { getUserSession } from '@/lib/session';
 import AppShell from '@/components/AppShell';
 import DailySummaryCard from '@/components/DailySummaryCard';
+import SupplementsCard from '@/components/SupplementsCard';
 import MealCard from '@/components/MealCard';
 import EmptyState from '@/components/EmptyState';
 import LoadingState from '@/components/LoadingState';
@@ -132,6 +133,8 @@ export default function TodayDashboard() {
           />
         )}
       </div>
+
+      <SupplementsCard userId={session.user.id} />
 
       <ConfirmDeleteDialog
         open={!!deleteTarget}

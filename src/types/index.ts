@@ -106,6 +106,26 @@ export interface AIAnalysisResult {
   warnings: string[];
 }
 
+export interface Supplement {
+  id: string;
+  user_id: string;
+  name: string;
+  dose: string | null;
+  time_of_day: TimeOfDay;
+  with_food: boolean;
+  tip: string | null;
+  created_at: string;
+}
+
+export interface SupplementLog {
+  id: string;
+  user_id: string;
+  supplement_id: string;
+  date: string;
+  created_at: string;
+}
+
+export type TimeOfDay = 'morning' | 'midday' | 'evening' | 'night';
 export type MealType = 'breakfast' | 'lunch' | 'dinner' | 'snack';
 export type WeightContext = 'whole_plate' | 'one_ingredient' | 'separate_ingredients';
 export type ActivityLevel = 'sedentary' | 'light' | 'moderate' | 'active' | 'very_active';

@@ -54,3 +54,10 @@ export function todayISO(): string {
 export function generateId(): string {
   return crypto.randomUUID?.() ?? Math.random().toString(36).substring(2, 15);
 }
+
+export const timeOfDayLabels: Record<import('@/types').TimeOfDay, string> = {
+  morning: '☀️ Morning',
+  midday: '🌤 Midday',
+  evening: '🌇 Evening',
+  night: '🌙 Night',
+};

@@ -1,38 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { analyzeMealSchema } from '@/lib/validations';
-
-const AI_PROVIDER = process.env.AI_PROVIDER || 'deepseek';
-const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || process.env.OPENAI_API_KEY;
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
-let _ai: any = null;
-async function getAIClient() {
-  if (!_ai) {
-    const { default: OpenAI } = await import('openai');
-    if (AI_PROVIDER === 'openai' && OPENAI_API_KEY) {
-      _ai = new OpenAI({ apiKey: OPENAI_API_KEY });
-    } else if (AI_PROVIDER === 'gemini' && GEMINI_API_KEY) {
-      // Gemini free tier via its OpenAI-compatible endpoint
-      _ai = new OpenAI({
-        apiKey: GEMINI_API_KEY,
-        baseURL: 'https://generativelanguage.googleapis.com/v1beta/openai/',
-      });
-    } else {
-      _ai = new OpenAI({
-        apiKey: DEEPSEEK_API_KEY || '',
-        baseURL: 'https://api.deepseek.com',
-      });
-    }
-  }
-  return _ai;
-}
-
-function getModel(): string {
-  if (AI_PROVIDER === 'openai' && OPENAI_API_KEY) return 'gpt-4o-mini';
-  if (AI_PROVIDER === 'gemini' && GEMINI_API_KEY) return 'gemini-flash-latest';
-  return 'deepseek-chat';
-}
+import { getAIClient, getModel, supportsJsonMode, extractJson } from '@/lib/ai';
 
 export async function POST(request: NextRequest) {
   try {
@@ -48,7 +16,6 @@ export async function POST(request: NextRequest) {
 
     const { description, totalWeightGrams, weightContext } = parsed.data;
     const ai = await getAIClient();
-    const isDeepSeek = AI_PROVIDER !== 'openai' || !OPENAI_API_KEY;
 
     const systemPrompt = `You are a cautious and helpful food analysis assistant.
 
@@ -101,7 +68,7 @@ Weight context: ${weightContext.replace('_', ' ')}`;
       model,
       messages,
       temperature: 0.3,
-      ...(model !== 'deepseek-chat' ? { response_format: { type: 'json_object' } } : {}),
+      ...(supportsJsonMode(model) ? { response_format: { type: 'json_object' } } : {}),
     });
 
     let text = completion.choices[0]?.message?.content;
@@ -112,20 +79,13 @@ Weight context: ${weightContext.replace('_', ' ')}`;
       );
     }
 
-    if (model !== 'gpt-4o-mini') {
-      const jsonMatch = text.match(/```json\n([\s\S]*?)```/) || text.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        text = jsonMatch[1] || jsonMatch[0];
-      }
-    }
-
-    const result = JSON.parse(text);
+    const result = JSON.parse(extractJson(text));
 
     return NextResponse.json({
       ...result,
       warnings: [
         ...(result.warnings || []),
-        isDeepSeek ? 'Analysis is text-only (photo not analyzed). Please review carefully.' : '',
+        'Analysis is text-only (photo not analyzed). Please review carefully.',
         'This is an estimate. Please review the grams before saving.',
       ].filter(Boolean),
     });
