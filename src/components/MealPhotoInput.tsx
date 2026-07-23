@@ -19,6 +19,16 @@ export default function MealPhotoInput({
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // ponytail: Chrome can't decode iPhone HEIC files; on iOS the browser
+    // hands us a JPEG automatically, so this only hits desktop file picks.
+    if (/\.heic$|\.heif$/i.test(file.name)) {
+      alert(
+        'This photo is in iPhone HEIC format, which this browser cannot display. Use a JPG/PNG here, or add the photo from your phone.'
+      );
+      e.target.value = '';
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (event) => {
       const result = event.target?.result as string;
