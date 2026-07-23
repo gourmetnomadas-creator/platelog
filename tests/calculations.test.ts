@@ -1,4 +1,5 @@
 import {
+  ageFromBirthdate,
   calculateItemNutrition,
   calculateMealTotals,
   calculateBMR,
@@ -9,6 +10,28 @@ import {
   formatKcal,
 } from '../src/lib/calculations';
 import { mealItemSchema, totalGramsValidation } from '../src/lib/validations';
+
+describe('ageFromBirthdate', () => {
+  it('returns null for missing or invalid dates', () => {
+    expect(ageFromBirthdate(null)).toBeNull();
+    expect(ageFromBirthdate('')).toBeNull();
+    expect(ageFromBirthdate('not-a-date')).toBeNull();
+  });
+
+  it('computes age accounting for whether the birthday has passed this year', () => {
+    const now = new Date();
+    const yesterday = new Date(now);
+    yesterday.setDate(now.getDate() - 1);
+    const tomorrow = new Date(now);
+    tomorrow.setDate(now.getDate() + 1);
+    const fmt = (d: Date) =>
+      `${d.getFullYear() - 30}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    // birthday was yesterday -> already turned 30
+    expect(ageFromBirthdate(fmt(yesterday))).toBe(30);
+    // birthday is tomorrow -> still 29
+    expect(ageFromBirthdate(fmt(tomorrow))).toBe(29);
+  });
+});
 
 describe('calculateItemNutrition', () => {
   it('calculates nutrition for a given weight and per-100g values', () => {

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Meal, Profile } from '@/types';
 import { getMealTypeLabel, formatDate } from '@/lib/utils';
-import { calculateDailyCalorieTarget } from '@/lib/calculations';
+import { ageFromBirthdate, calculateDailyCalorieTarget } from '@/lib/calculations';
 import { getUserSession } from '@/lib/session';
 import AppShell from '@/components/AppShell';
 import DailySummaryCard from '@/components/DailySummaryCard';
@@ -74,7 +74,7 @@ export default function TodayDashboard() {
   const targetKcal = profile ? calculateDailyCalorieTarget({
     weight_kg: profile.current_weight_kg,
     height_cm: profile.height_cm,
-    age: profile.age,
+    age: ageFromBirthdate(profile.birthdate) ?? profile.age,
     sex: profile.sex,
     activity_level: profile.activity_level,
     goal_type: profile.goal_type,

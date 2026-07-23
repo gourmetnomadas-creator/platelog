@@ -4,6 +4,7 @@ export interface Profile {
   height_cm: number | null;
   current_weight_kg: number | null;
   age: number | null;
+  birthdate: string | null;
   sex: string | null;
   activity_level: string | null;
   goal_type: string | null;

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Profile, ActivityLevel, GoalType } from '@/types';
-import { calculateBMR, getActivityMultiplier, getGoalAdjustment } from '@/lib/calculations';
+import { ageFromBirthdate, calculateBMR, getActivityMultiplier, getGoalAdjustment } from '@/lib/calculations';
 
 interface ProfileFormProps {
   profile: Profile | null;
@@ -14,7 +14,7 @@ export default function ProfileForm({ profile, onSave, saving }: ProfileFormProp
   const [name, setName] = useState(profile?.name || '');
   const [heightCm, setHeightCm] = useState(profile?.height_cm?.toString() || '');
   const [weightKg, setWeightKg] = useState(profile?.current_weight_kg?.toString() || '');
-  const [age, setAge] = useState(profile?.age?.toString() || '');
+  const [birthdate, setBirthdate] = useState(profile?.birthdate || '');
   const [sex, setSex] = useState(profile?.sex || '');
   const [activityLevel, setActivityLevel] = useState<ActivityLevel>(
     (profile?.activity_level as ActivityLevel) || 'sedentary'
@@ -26,10 +26,12 @@ export default function ProfileForm({ profile, onSave, saving }: ProfileFormProp
     profile?.manual_calorie_target?.toString() || ''
   );
 
+  const derivedAge = ageFromBirthdate(birthdate) ?? profile?.age ?? null;
+
   const calculatedTarget = (() => {
     const w = parseFloat(weightKg);
     const h = parseFloat(heightCm);
-    const a = parseInt(age);
+    const a = derivedAge;
     if (!w || !h || !a || !sex) return null;
     const bmr = calculateBMR(w, h, a, sex);
     const mult = getActivityMultiplier(activityLevel);
@@ -43,7 +45,8 @@ export default function ProfileForm({ profile, onSave, saving }: ProfileFormProp
       name: name || null,
       height_cm: parseFloat(heightCm) || null,
       current_weight_kg: parseFloat(weightKg) || null,
-      age: parseInt(age) || null,
+      birthdate: birthdate || null,
+      age: derivedAge,
       sex: sex || null,
       activity_level: activityLevel,
       goal_type: goalType,
@@ -88,11 +91,14 @@ export default function ProfileForm({ profile, onSave, saving }: ProfileFormProp
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="mb-1 block text-sm font-medium text-slate-700">Age</label>
+          <label className="mb-1 block text-sm font-medium text-slate-700">
+            Birthdate{derivedAge ? ` (${derivedAge} years)` : ''}
+          </label>
           <input
-            type="number"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
+            type="date"
+            value={birthdate}
+            onChange={(e) => setBirthdate(e.target.value)}
+            max={new Date().toISOString().split('T')[0]}
             className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400"
           />
         </div>

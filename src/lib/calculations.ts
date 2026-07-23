@@ -13,6 +13,19 @@ export interface MealItemInput {
   fat_per_100g: number;
 }
 
+export function ageFromBirthdate(birthdate: string | null | undefined): number | null {
+  if (!birthdate) return null;
+  const birth = new Date(birthdate);
+  if (isNaN(birth.getTime())) return null;
+  const now = new Date();
+  let age = now.getFullYear() - birth.getFullYear();
+  const beforeBirthday =
+    now.getMonth() < birth.getMonth() ||
+    (now.getMonth() === birth.getMonth() && now.getDate() < birth.getDate());
+  if (beforeBirthday) age--;
+  return age;
+}
+
 export function calculateItemNutrition(item: MealItemInput) {
   const factor = item.grams / 100;
   return {
