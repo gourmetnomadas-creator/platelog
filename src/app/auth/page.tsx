@@ -60,7 +60,7 @@ export default function AuthPage() {
         <div className="w-full max-w-sm">
           <h1 className="text-2xl font-bold text-slate-800">Check your email</h1>
           <p className="mt-2 mb-6 text-sm text-slate-500">
-            We sent a 6-digit code to {email}. Enter it below (or tap the link
+            We sent a login code to {email}. Enter it below (or tap the link
             in the email if you are on this device).
           </p>
           <form onSubmit={handleVerify} className="space-y-4">
@@ -70,10 +70,10 @@ export default function AuthPage() {
               autoComplete="one-time-code"
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              placeholder="123456"
-              maxLength={6}
+              placeholder="12345678"
+              maxLength={10}
               required
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-center text-2xl tracking-[0.5em] outline-none focus:border-indigo-400"
+              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-center text-2xl tracking-[0.3em] outline-none focus:border-indigo-400"
             />
             {error && <p className="text-sm text-red-600">{error}</p>}
             <button
